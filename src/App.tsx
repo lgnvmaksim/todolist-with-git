@@ -3,6 +3,7 @@ import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from "uuid";
 import a from './Components/Styles-modules/styles.module.css'
+import {UniversalInput} from "./Components/UniversalInput";
 
 export type FilteredType = 'all' | 'active' | 'completed'
 export type TaskType = {
@@ -50,30 +51,48 @@ function App() {
     });
 
 
-    const changeFilter = (todoID:string, filteredValue: FilteredType) => {
-        setTodolists(todolists.map(el=>el.id===todoID ? {...el, filter:filteredValue} : el))
+    const changeFilter = (todoID: string, filteredValue: FilteredType) => {
+        setTodolists(todolists.map(el => el.id === todoID ? {...el, filter: filteredValue} : el))
     }
 
-    const checkboxInputChange = (todoID:string, taskId: string, isDone: boolean) => {
-        setTasks({...tasks, [todoID]:tasks[todoID].map(el=>el.id===taskId ? {...el, isDone} :el)})
+    const checkboxInputChange = (todoID: string, taskId: string, isDone: boolean) => {
+        setTasks({...tasks, [todoID]: tasks[todoID].map(el => el.id === taskId ? {...el, isDone} : el)})
     }
 
-    const addTask = (todoID:string, newTitle: string) => {
-        let newTask = {id: v1(), title: newTitle, isDone: true}
-        setTasks({...tasks, [todoID]: [newTask,...tasks[todoID]]})
+    const addTask = (todoID: string, newTitle: string) => {
+        let newTask = {id: v1(), title: newTitle, isDone: false}
+        setTasks({...tasks, [todoID]: [newTask, ...tasks[todoID]]})
     }
 
-    const removeTask = (todoID:string, remoteId: string) => {
-    setTasks({...tasks, [todoID]: tasks[todoID].filter(f=>f.id!==remoteId)})
+    const removeTask = (todoID: string, remoteId: string) => {
+        setTasks({...tasks, [todoID]: tasks[todoID].filter(f => f.id !== remoteId)})
     }
 
-    const removeTodolist = (todoID:string) => {
-    setTodolists(todolists.filter(f=>f.id!==todoID))
+    const removeTodolist = (todoID: string) => {
+        setTodolists(todolists.filter(f => f.id !== todoID))
         delete tasks[todoID]
     }
 
+    const createTodolist = (newTitleTodo: string) => {
+        const newTodolistID = v1()
+        const newTodolist:TodolistType = {id: newTodolistID, title: newTitleTodo, filter: 'all'}
+        setTodolists([...todolists, newTodolist])
+        setTasks({...tasks, [newTodolistID]: [
+                {id: v1(), title: "JS", isDone: true},
+                {id: v1(), title: "ReactJS", isDone: false},
+            ]})
+    }
+
+    const changeTitleInSpan = (todoID:string, taskId:string, newTitle:string) => {
+    setTasks({...tasks, [todoID]: tasks[todoID].map(el=>el.id===taskId ? {...el, title:newTitle} :el)})
+    }
+
+    const changeTodolistTitle = (todoID:string, newTitle:string) => {
+        setTodolists(todolists.map(el=>el.id===todoID ? {...el, title:newTitle} : el))
+    }
 
     return <div className={a.App}>
+        <UniversalInput callback={createTodolist}/>
         {todolists.map(el => {
             let filteredTasks = tasks[el.id]
             if (el.filter === 'active') {
@@ -86,7 +105,7 @@ function App() {
                 <Todolist
                     key={el.id}
                     todoID={el.id}
-                    titleValue={'Hello ToDo'}
+                    titleValue={el.title}
                     tasks={filteredTasks}
                     changeFilter={changeFilter}
                     checkboxInputChange={checkboxInputChange}
@@ -94,6 +113,8 @@ function App() {
                     removeTask={removeTask}
                     filter={el.filter}
                     removeTodolist={removeTodolist}
+                    changeTitleInSpan={changeTitleInSpan}
+                    changeTodolistTitle={changeTodolistTitle}
                 />
             )
         })}

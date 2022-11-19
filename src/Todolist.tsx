@@ -1,102 +1,92 @@
 import a from './Components/Styles-modules/styles.module.css'
 import {FilteredType, TaskType} from "./App";
 import {UniversalButton} from "./Components/UniversalButton";
-import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {AirplanemodeInactive} from "@mui/icons-material";
+import {UniversalInput} from "./Components/UniversalInput";
+import {SuperSpan} from "./Components/Span";
 
 
 type TodolistPropsType = {
-    todoID:string
+    todoID: string
     titleValue: string
     tasks: TaskType[]
-    changeFilter: (todoID:string,filteredValue: FilteredType) => void
-    checkboxInputChange: (todoID:string, taskId: string, isDone: boolean) => void
-    addTask: (todoID:string, newTitle: string) => void
-    removeTask: (todoID:string, remoteId: string) => void
+    changeFilter: (todoID: string, filteredValue: FilteredType) => void
+    checkboxInputChange: (todoID: string, taskId: string, isDone: boolean) => void
+    addTask: (todoID: string, newTitle: string) => void
+    removeTask: (todoID: string, remoteId: string) => void
     filter: FilteredType
-    removeTodolist:(todoID:string)=>void
+    removeTodolist: (todoID: string) => void
+    changeTitleInSpan:(todoID:string, taskId:string, newTitle:string)=>void
+    changeTodolistTitle:(todoID:string, newTitle:string)=>void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
     const {changeFilter, filter, todoID} = props
-    const [text, setText] = useState('')
-    const [error, setError]=useState<string|null>(null)
 
-    const checkboxInputChange = (todoID:string, taskId: string, e: boolean) => {
-        props.checkboxInputChange(todoID,taskId, e)
+    const checkboxInputChange = (todoID: string, taskId: string, e: boolean) => {
+        props.checkboxInputChange(todoID, taskId, e)
     }
-    const onChangeTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setText(e.currentTarget.value)
-        setError(null)
-    }
-
-    const addTaskButtonHandler = () => {
-        if (text.trim()) {
-        props.addTask(todoID,text.trim())
-        setText('')
-    } else {
-            setError('Лососни тунца')
-
-        }}
     const removeTaskButtonHandler = (id: string) => {
-        props.removeTask(todoID ,id)
+        props.removeTask(todoID, id)
     }
-    const onKeyDownHandler = (e:KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            addTaskButtonHandler()
-        }
+
+    const changeTitleInSpanHandler = (id:string, newTitle:string) => {
+        props.changeTitleInSpan(todoID, id, newTitle)
     }
+
     const mappingTasks = props.tasks.map(el => {
+
         return (
             <li key={el.id}
-                className={el.isDone ? a.isDone :''}>
+                className={el.isDone ? a.isDone : ''}>
                 <input type="checkbox"
                        checked={el.isDone}
                        onChange={(e) => {
                            checkboxInputChange(todoID, el.id, e.currentTarget.checked)
                        }}
                 />
-                <span>{el.title}</span>
+               <SuperSpan spanTitle={el.title} changeTitleInSpan={(newTitle:string)=>{changeTitleInSpanHandler(el.id, newTitle)}} />
                 <UniversalButton callback={() => {
                     removeTaskButtonHandler(el.id)
                 }} name={'x'}/>
             </li>
         )
     })
+
     const removeTodolistButtonHandler = () => {
         props.removeTodolist(todoID)
+    }
+    const addTaskInputHandler = (text: string) => {
+        props.addTask(todoID, text)
+    }
+
+    const changeTitleTodolistHandler = (newTitle:string) => {
+        props.changeTodolistTitle(todoID, newTitle)
     }
 
     return <div className={a.todolist}>
         <h3>
-            {props.titleValue}
-        <UniversalButton callback={removeTodolistButtonHandler} name={'x'}/>
+            <SuperSpan spanTitle={props.titleValue} changeTitleInSpan={changeTitleTodolistHandler}/>
+            <UniversalButton callback={removeTodolistButtonHandler} name={'x'}/>
         </h3>
-        <input
-            value={text}
-            onChange={onChangeTextHandler}
-            onKeyDown={onKeyDownHandler}
-            className={error ? a.error : undefined}
-        />
-        <UniversalButton callback={addTaskButtonHandler} name={'+'}/>
-        {error && <div className={a.errorMessage}>{error}</div>}
+        <UniversalInput callback={addTaskInputHandler}/>
         <ul>
             {mappingTasks}
         </ul>
         <UniversalButton
-            styles={ filter==='all' ? a.activeFilter : ''}
+            styles={filter === 'all' ? a.activeFilter : ''}
             callback={() => {
-            changeFilter(todoID,'all')
-        }} name={'All'}/>
+                changeFilter(todoID, 'all')
+            }} name={'All'}/>
         <UniversalButton
-            styles={ filter==='active' ? a.activeFilter : ''}
+            styles={filter === 'active' ? a.activeFilter : ''}
             callback={() => {
-            changeFilter(todoID,'active')
-        }} name={'Active'}/>
+                changeFilter(todoID, 'active')
+            }} name={'Active'}/>
         <UniversalButton
-            styles={ filter==='completed' ? a.activeFilter : ''}
+            styles={filter === 'completed' ? a.activeFilter : ''}
             callback={() => {
-            changeFilter(todoID,'completed')
-        }} name={'Completed'}/>
+                changeFilter(todoID, 'completed')
+            }} name={'Completed'}/>
     </div>
 }
