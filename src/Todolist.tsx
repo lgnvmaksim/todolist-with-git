@@ -1,11 +1,11 @@
-import s from './Components/Styles-modules/styles.module.css'
+import a from './Components/Styles-modules/styles.module.css'
 
 type TodolistPropsType={
     titleValue:string
 }
 
 export const Todolist = (props:TodolistPropsType) => {
-    return <div className={s.todolist}>
+    return <div className={a.todolist}>
         <h3>{props.titleValue}</h3>
         <input/>
         <button>+</button>
