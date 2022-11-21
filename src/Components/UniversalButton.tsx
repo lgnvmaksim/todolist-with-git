@@ -6,8 +6,6 @@ type ButtonType = {
 
 
 export const UniversalButton = (props: ButtonType) => {
-    const onClickHandler = () => props.callback()
-    const stylesButton = props.styles
-    return <button className={stylesButton}
-                   onClick={onClickHandler}>{props.name}</button>
+    return <button className={props.styles}
+                   onClick={props.callback}>{props.name}</button>
 }
