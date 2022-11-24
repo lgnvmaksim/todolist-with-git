@@ -7,6 +7,7 @@ import {addTaskAC, checkboxInputChangeAC, removeTackAC, tasksReducer} from "./re
 import {changeFilterAC, FilterReducer} from "./reducers/filterReducer";
 
 export type FilteredType = 'all' | 'active' | 'completed'
+
 export type TaskType = {
     id: string
     title: string
@@ -29,8 +30,8 @@ function App() {
         tasksDispatch(checkboxInputChangeAC(taskId, isDone))
     }
 
-    const removeTask = (remoteId: string) => {
-        tasksDispatch(removeTackAC(remoteId))
+    const removeTask = (removeId: string) => {
+        tasksDispatch(removeTackAC(removeId))
     }
 
     const addTask = (newTitle: string) => {

@@ -6,7 +6,7 @@ type superType = removeTaskACType | addTaskACType | checkboxInputChangeACType
 export const tasksReducer = (state: TaskType[], action: superType) => {
     switch (action.type) {
         case 'REMOVE-TASK': {
-            return state.filter(f => f.id !== action.payload.id)
+            return state.filter(f => f.id !== action.payload.removeId)
         }
         case 'ADD-TASK': {
             let newTask = {id: v1(), title: action.payload.id, isDone: false}
@@ -24,11 +24,11 @@ export const tasksReducer = (state: TaskType[], action: superType) => {
 
 
 type removeTaskACType = ReturnType<typeof removeTackAC>
-export const removeTackAC = (remoteId: string) => {
+export const removeTackAC = (removeId: string) => {
     return {
         type: 'REMOVE-TASK',
         payload: {
-            id: remoteId
+           removeId
         }
     } as const
 }
