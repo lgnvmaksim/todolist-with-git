@@ -1,24 +1,25 @@
 .App {
     padding: 100px 0px 650px 100px ;
     display: flex;
-    background-color: #162c01;
-}
 
-.body {
-
-    background: rgba(44,31,146,0.59);
 
 }
+
+/*.body {*/
+
+/*    background: rgba(44,31,146,0.59);*/
+
+/*}*/
 
 .todolist {
-    background-color: #f1c0c0;
+/*    background-color: #f1c0c0;*/
     padding: 20px;
-    border-radius: 10%;
+/*    border-radius: 10%;*/
 }
 
-.App > div {
-    margin-right: 50px;
-}
+/*.App > div {*/
+/*    margin-right: 50px;*/
+/*}*/
 
 .error {
     border: #e14d4d 4px solid;
