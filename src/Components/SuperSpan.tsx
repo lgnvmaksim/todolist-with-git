@@ -1,4 +1,7 @@
 import {useState} from "react";
+import TextField from '@mui/material/TextField';
+
+
 
 type SpanType = {
     title: string
@@ -9,7 +12,9 @@ export const SuperSpan = (props: SpanType) => {
     const [text, setText] = useState<string>(props.title)
     const [spanCreator, setSpanCreator] = useState(false)
     return spanCreator
-        ? <input
+
+        ? <TextField
+            size={'small'}
             onBlur={() => {
                 setSpanCreator(!spanCreator)
             }}

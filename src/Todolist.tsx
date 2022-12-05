@@ -2,6 +2,12 @@ import a from './Components/Styles-modules/styles.module.css'
 import {FilteredType, TaskKeyType} from "./App";
 import {Input} from "./Components/Input";
 import {SuperSpan} from "./Components/SuperSpan";
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Checkbox from '@mui/material/Checkbox';
+import ListItem from "@mui/material/ListItem";
+
 
 
 type TodolistPropsType = {
@@ -15,6 +21,7 @@ type TodolistPropsType = {
     removeTodolist: (todoID: string) => void
     changeTasks: (todoID: string, taskID: string, newTitle: string) => void
     changeTodolistTitle: (todoID: string, newTitle: string) => void
+    filter:FilteredType
 }
 
 export const Todolist = (props: TodolistPropsType) => {
@@ -24,35 +31,43 @@ export const Todolist = (props: TodolistPropsType) => {
         props.changeTasks(todoID, taskID, newTitle)
     }
     const mappingTasks = props.tasks.map(el => {
-        return (
-            <ul>
-                <li key={el.id}
-                    className={el.isDone ? a.isDone : ''}>
-                    <input type="checkbox" checked={el.isDone}
-                           onChange={(e) => {
-                               props.changeCheckBox(todoID, el.id, e.currentTarget.checked)
-                           }}/>
-                    <SuperSpan title={el.title} callback={(newText) => {
-                        superSpanHandler(el.id, newText)
-                    }}/>
-                    <button onClick={() => {
+        return <ListItem
+                style={{padding: '0px'}}
+                key={el.id}
+                className={el.isDone ? a.isDone : ''}>
+                <Checkbox
+                    checked={el.isDone}
+                    size={'small'}
+                    onChange={(e) => {
+                        props.changeCheckBox(todoID, el.id, e.currentTarget.checked)
+                    }}
+                />
+                <SuperSpan title={el.title} callback={(newText) => {
+                    superSpanHandler(el.id, newText)
+                }}/>
+
+                <IconButton aria-label="delete" color="primary" style={{color: '#ad3214'}}>
+                    <DeleteIcon onClick={() => {
                         props.removeTasks(todoID, el.id)
-                    }}>x
-                    </button>
-                </li>
-            </ul>
-        )
+                    }}/>
+                </IconButton>
+            </ListItem>
     })
 
     return <div className={a.todolist}>
+
         <h3>
             <SuperSpan title={props.titleValue} callback={(newText) => {
                 props.changeTodolistTitle(todoID, newText)
             }}/>
-            <button onClick={() => {
-                props.removeTodolist(todoID)
-            }}>x
-            </button>
+
+            <IconButton aria-label="delete">
+                <DeleteIcon
+                    style={{color: "#E0B187"}}
+                    onClick={() => {
+                        props.removeTodolist(todoID)
+                    }}/>
+            </IconButton>
         </h3>
         <Input callback={(newText: string) => {
             props.addTask(todoID, newText)
@@ -60,17 +75,26 @@ export const Todolist = (props: TodolistPropsType) => {
 
         {mappingTasks}
 
-        <button onClick={() => {
+        <Button
+            variant={'contained'}
+            color = {props.filter ==='all' ? "secondary" :'primary'}
+            onClick={() => {
             changeFilter(todoID, 'all')
         }}>All
-        </button>
-        <button onClick={() => {
+        </Button>
+        <Button
+            color = {props.filter ==='active' ? "secondary" :'primary'}
+            variant={'contained'}
+            onClick={() => {
             changeFilter(todoID, 'active')
         }}>Active
-        </button>
-        <button onClick={() => {
+        </Button>
+        <Button
+            color = {props.filter ==='completed' ? "secondary" :'primary'}
+            variant={'contained'}
+            onClick={() => {
             changeFilter(todoID, 'completed')
         }}>Completed
-        </button>
+        </Button>
     </div>
 }
