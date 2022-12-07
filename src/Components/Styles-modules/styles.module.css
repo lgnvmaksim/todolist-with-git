@@ -4,12 +4,6 @@
     background-color: #162c01;
 }
 
-.body {
-
-    background: rgba(44,31,146,0.59);
-
-}
-
 .todolist {
     background-color: #f1c0c0;
     padding: 20px;
@@ -34,4 +28,6 @@
 
 .isDone {
     opacity: 0.5;
+   text-decoration: line-through;
+
 }
