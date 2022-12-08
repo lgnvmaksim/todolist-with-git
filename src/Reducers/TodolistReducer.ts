@@ -36,7 +36,7 @@ export const changeFilterAC = (todoID: string, value: FilteredType) => {
     } as const
 }
 
-type removeTodolistACType = ReturnType<typeof removeTodolistAC>
+export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
 export const removeTodolistAC = (todoID: string) => {
     return {
         type: 'REMOVE-TODOLIST',

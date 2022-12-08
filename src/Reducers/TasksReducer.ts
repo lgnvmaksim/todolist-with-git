@@ -1,8 +1,9 @@
 import {TaskType} from "../App";
 import {v1} from "uuid";
+import {removeTodolistACType} from "./TodolistReducer";
 
 type SuperType = removeTasksACType | changeCheckboxACType |
-    addTasksACType | changeTasksACType | addTodolistTasksACType
+    addTasksACType | changeTasksACType | addTodolistTasksACType | removeTodolistACType
 
 
 export const TasksReducer = (state: TaskType, action: SuperType) => {
@@ -10,7 +11,8 @@ export const TasksReducer = (state: TaskType, action: SuperType) => {
     switch (action.type) {
         case 'REMOVE-TASKS' : {
             return {
-                ...state, [action.payload.todoID]: state[action.payload.todoID].filter(f =>
+                ...state,
+                [action.payload.todoID]: state[action.payload.todoID].filter(f =>
                     f.id !== action.payload.taskID)
             }
         }
@@ -32,12 +34,12 @@ export const TasksReducer = (state: TaskType, action: SuperType) => {
         }
         case "ADD-TODOLIST": {
             return {
-                ...state, [action.payload.newTodolistID]: [
-                    {id: v1(), title: "JS", isDone: true},
-                    {id: v1(), title: "ReactJS", isDone: false},
-                    {id: v1(), title: "Rest API", isDone: false}
-                ]
+                ...state, [action.payload.newTodolistID]: []
             }
+        } case 'REMOVE-TODOLIST':{
+            let copyState ={...state}
+            delete  copyState[action.payload.todoID]
+            return copyState
         }
         default:
             return state

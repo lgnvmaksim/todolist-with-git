@@ -75,7 +75,7 @@ function App() {
 
     const removeTodolist = (todoID: string) => {
         todolistsDispatch(removeTodolistAC(todoID))
-        delete tasks[todoID]
+        tasksDispatch(removeTodolistAC(todoID)) //хз правильно ли
     }
 
     const addTodolist = (newTitle: string) => {
