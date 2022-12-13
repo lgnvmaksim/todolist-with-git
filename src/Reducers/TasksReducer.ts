@@ -33,6 +33,7 @@ export const TasksReducer = (state: TaskType, action: SuperType) => {
             }
         }
         case "ADD-TODOLIST": {
+
             return {
                 ...state, [action.payload.newTodolistID]: []
             }

@@ -2,7 +2,7 @@ import a from './Components/Styles-modules/styles.module.css'
 import {FilteredType, TasksListType} from "./App";
 import SuperInput from "./Components/SuperInput";
 import {SuperSpan} from "./Components/SuperSpan";
-import {CheckBox} from "./Components/CheckBox";
+import {Tasks} from "./Components/Tasks";
 
 
 type TodolistPropsType = {
@@ -22,33 +22,21 @@ type TodolistPropsType = {
 export const Todolist = (props: TodolistPropsType) => {
 
     const {
-        todoID, changeFilter, removeTasks,
-        changeCheckbox, addTasks, filter, removeTodolist, changeTasks, changeTodolistTitle
+        changeFilter, todoID, tasks, changeTasks, changeCheckbox, removeTasks,
+        addTasks, filter, removeTodolist, changeTodolistTitle
     } = props
 
-    const changeTasksTitleHandler = (taskID: string, newTitle: string) => {
-        changeTasks(todoID, taskID, newTitle)
-    }
-
-    const mappingTasks = props.tasks.map(el => {
-        return (
-            <ul>
-                <li className={el.isDone ? a.isDone : ''} key={el.id}>
-                    <CheckBox value={el.isDone}
-                              callback={(event) => changeCheckbox(todoID, el.id, event)}/>
-                    <SuperSpan title={el.title} callback={(newTitle) => changeTasksTitleHandler(el.id, newTitle)}/>
-                    <button onClick={() => removeTasks(todoID, el.id)}>x</button>
-                </li>
-            </ul>
-        )
-    })
     return <div className={a.todolist}>
         <h3><SuperSpan title={props.titleValue}
                        callback={(newTitle) => changeTodolistTitle(todoID, newTitle)}/>
             <button onClick={() => removeTodolist(todoID)}>x</button>
         </h3>
         <SuperInput callback={(newText) => addTasks(todoID, newText)}/>
-        {mappingTasks}
+        <Tasks tasks={tasks}
+               changeTasks={changeTasks}
+               todoID={todoID}
+               changeCheckbox={changeCheckbox}
+               removeTasks={removeTasks}/>
         <button className={filter === 'all' ? a.activeFilter : ''} onClick={() => changeFilter(todoID, 'all')}>All
         </button>
         <button className={filter === 'active' ? a.activeFilter : ''}
