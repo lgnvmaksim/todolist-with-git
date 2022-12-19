@@ -5,8 +5,9 @@ import {removeTodolistACType} from "./TodolistReducer";
 type SuperType = removeTasksACType | changeCheckboxACType |
     addTasksACType | changeTasksACType | addTodolistTasksACType | removeTodolistACType
 
+const initialState: TaskType ={}
 
-export const TasksReducer = (state: TaskType, action: SuperType) => {
+export const TasksReducer = (state: TaskType = initialState, action: SuperType) => {
 
     switch (action.type) {
         case 'REMOVE-TASKS' : {

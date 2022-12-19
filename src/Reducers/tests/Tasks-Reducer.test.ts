@@ -1,8 +1,8 @@
-import {addTasksAC, addTodolistTasksAC, changeCheckboxAC, changeTasksAC, removeTasksAC} from "./TasksReducer";
+import {addTasksAC, addTodolistTasksAC, changeCheckboxAC, changeTasksAC, removeTasksAC} from "../TasksReducer";
 
-import { TasksReducer } from './TasksReducer'
-import {TaskType} from '../App'
-import {removeTodolistAC} from "./TodolistReducer";
+import { TasksReducer } from '../TasksReducer'
+import {TaskType} from '../../App'
+import {removeTodolistAC} from "../TodolistReducer";
 
 test('correct task should be deleted from correct array', () => {
     const startState: TaskType = {
