@@ -1,7 +1,7 @@
-import a from './Components/Styles-modules/styles.module.css'
-import {FilteredType, TaskKeyType} from "./App";
-import {Input} from "./Components/Input";
-import {Span} from "./Components/Span";
+import a from '../Components/Styles-modules/styles.module.css'
+import {FilteredType, TaskKeyType} from "../App";
+import {Input} from "../Components/Input";
+import {Span} from "../Components/Span";
 
 type TodolistPropsType = {
     titleValue: string

@@ -1,16 +1,18 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import a from "./Styles-modules/styles.module.css";
 
 type InputType = {
     callback: (newText:string)=>void
 }
 
-export const Input = ({callback}: InputType) => {
+export const Input = memo(({callback}: InputType) => {
+    console.log('Input')
     const [text, setText] = useState('')
     const [error, setError] = useState<null | string>(null)
     const onChangeNewTaskHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setText(e.currentTarget.value)
-        setError(null)
+        if (error !==null) {setError(null)}
+
     }
     const onClickAddTaskHandler = () => {
         if (text.trim() !== '') {
@@ -26,7 +28,6 @@ export const Input = ({callback}: InputType) => {
         }
     }
 
-
     return (
         <div>
             <input
@@ -38,4 +39,4 @@ export const Input = ({callback}: InputType) => {
             {error && <div className={a.errorMessage}>{error}</div>}
         </div>
     );
-};
+})

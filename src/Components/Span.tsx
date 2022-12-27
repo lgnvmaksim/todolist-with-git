@@ -1,11 +1,11 @@
-import React, {ChangeEvent, useState, KeyboardEvent} from 'react';
+import React, {ChangeEvent, useState, KeyboardEvent, memo} from 'react';
 
 type spanType = {
     title: string
     callback:(newSpanTitle:string)=>void
 }
 
-export const Span = ({title, callback}: spanType) => {
+export const Span = memo(({title, callback}: spanType) => {
     const [changeSpan, setChangeSpan] = useState(false)
     const [text, setText] = useState(title)
     const onClickHandler = () => {
@@ -29,4 +29,4 @@ export const Span = ({title, callback}: spanType) => {
             onKeyDown={onKeyDownHandler}
         onChange={onChangeNewTitleHandler}/>
         : <span onClick={onClickHandler}>{title}</span>
-};
+})
