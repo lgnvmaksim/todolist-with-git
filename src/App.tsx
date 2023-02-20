@@ -30,7 +30,6 @@ export type TaskKeyType = {
 
 
 export const App = () => {
-    console.log('APP')
     const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolist)
     const dispatch = useDispatch()
 
