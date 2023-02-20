@@ -2,20 +2,20 @@ import React, {memo, useCallback} from 'react';
 import a from "./Styles-modules/styles.module.css";
 import {Span} from "./Span";
 import {changeCheckedAC, changeTaskTitleAC, removeTaskAC} from "../redusers/tasksReducer";
-import {useDispatch} from "react-redux";
+import {ItemsType, TaskStatuses} from "../api/todolistApi";
+import {useAppDispatch} from "../redusers/store";
 
-import {TaskKeyType} from "../App";
 
 type TaskType ={
     todoID:string
-    task: TaskKeyType
+    task: ItemsType
 }
 
 export const Tasks = memo(({todoID, task}:TaskType) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
-    const changeChecked = useCallback((todoID: string, taskID: string, isDoneValue: boolean) => {
-        dispatch(changeCheckedAC(todoID, taskID, isDoneValue))
+    const changeChecked = useCallback((todoID: string, taskID: string, status: TaskStatuses) => {
+        dispatch(changeCheckedAC(todoID, taskID, status))
     }, [dispatch])
     const changeTaskTitle = useCallback((todoID: string, taskID: string, newTitle: string) => {
         dispatch(changeTaskTitleAC(todoID, taskID, newTitle))
@@ -23,11 +23,14 @@ export const Tasks = memo(({todoID, task}:TaskType) => {
     const removeTask = useCallback((todoID: string, taskID: string) => {
         dispatch(removeTaskAC(todoID, taskID))
     }, [dispatch])
+
+
+
     return (
         <li key={task.id}
-            className={task.isDone ? a.isDone : ''}>
-            <input type="checkbox" checked={task.isDone}
-                   onChange={(e) => changeChecked(todoID, task.id, e.currentTarget.checked)}/>
+            className={task.status===TaskStatuses.Completed ? a.isDone : ''}>
+            <input type="checkbox" checked={task.status===TaskStatuses.Completed}
+                   onChange={(e) => changeChecked(todoID, task.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)}/>
             <Span title={task.title} callback={(newSpanTitle) => changeTaskTitle(todoID, task.id, newSpanTitle)}/>
             <button onClick={() => removeTask(todoID, task.id)}>x</button>
         </li>

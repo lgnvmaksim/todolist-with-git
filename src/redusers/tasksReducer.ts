@@ -1,6 +1,8 @@
 import {TaskType} from "../App";
 import {v1} from "uuid";
 import {addNewTodolistACType, removeTodolistACType} from "./todolistReducer";
+import {TaskStatuses} from "../api/todolistApi";
+
 
 type actionType = removeTaskACType | addTaskACType | changeCheckedACType |
     removeTodolistACType | changeTaskTitleACType | addNewTodolistACType
@@ -16,7 +18,7 @@ export const tasksReducer = (state: TaskType= initialState, action: actionType) 
             }
         }
         case "ADD-TASKS": {
-            const newTask = {id: v1(), title: action.payload.newTaskTitle, isDone: false}
+            const newTask = {id: v1(), title: action.payload.newTaskTitle, status: TaskStatuses.New}
             return {
                 ...state, [action.payload.todoID]:
                     [newTask, ...state[action.payload.todoID]]
@@ -26,7 +28,7 @@ export const tasksReducer = (state: TaskType= initialState, action: actionType) 
             return {
                 ...state, [action.payload.todoID]:
                     state[action.payload.todoID].map(el =>
-                        el.id === action.payload.taskID ? {...el, isDone: action.payload.isDoneValue} : el)
+                        el.id === action.payload.taskID ? {...el, status: action.payload.isDoneValue} : el)
             }
         }
         case "REMOVE-TODOLIST": {
@@ -71,7 +73,7 @@ export const addTaskAC = (todoID: string, newTaskTitle: string) => {
 }
 
 type changeCheckedACType = ReturnType<typeof changeCheckedAC>
-export const changeCheckedAC = (todoID: string, taskID: string, isDoneValue: boolean) => {
+export const changeCheckedAC = (todoID: string, taskID: string, isDoneValue: TaskStatuses) => {
     return {
         type: 'CHANGE-CHECKED',
         payload: {todoID, taskID, isDoneValue}

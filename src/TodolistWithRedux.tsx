@@ -2,12 +2,11 @@ import React, {memo, useCallback} from 'react';
 import a from "./Components/Styles-modules/styles.module.css";
 import {Span} from "./Components/Span";
 import {Input} from "./Components/Input";
-import {FilteredType, TaskKeyType} from "./App";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./redusers/store";
-import {changeFilterAC, changeTodolistTileAC, removeTodolistAC} from "./redusers/todolistReducer";
+import {useAppDispatch, useAppSelector} from "./redusers/store";
+import {changeFilterAC, changeTodolistTileAC, FilteredType, removeTodolistAC} from "./redusers/todolistReducer";
 import {addTaskAC} from "./redusers/tasksReducer";
 import {Tasks} from "./Components/Tasks";
+import {ItemsType, TaskStatuses} from "./api/todolistApi";
 
 type TodolistWithReduxPropsType = {
     todoID: string
@@ -15,9 +14,11 @@ type TodolistWithReduxPropsType = {
     filter: FilteredType
 }
 
+
+
 export const TodolistWithRedux = memo(({todoID, filter, title}: TodolistWithReduxPropsType) => {
-    let tasks = useSelector<AppRootStateType, TaskKeyType[]>(state => state.tasks[todoID])
-    const dispatch = useDispatch()
+    let tasks = useAppSelector<ItemsType[]>(state => state.tasks[todoID])
+    const dispatch = useAppDispatch()
 
     const changeTodolistTile = useCallback((todoID: string, newTitle: string) => {
         dispatch(changeTodolistTileAC(todoID, newTitle))
@@ -37,10 +38,10 @@ export const TodolistWithRedux = memo(({todoID, filter, title}: TodolistWithRedu
 
 
     if (filter === 'completed') {
-        tasks = tasks.filter(f => f.isDone)
+        tasks = tasks.filter(f => f.status===TaskStatuses.Completed)
     }
     if (filter === 'active') {
-        tasks = tasks.filter(f => !f.isDone)
+        tasks = tasks.filter(f => f.status===TaskStatuses.New)
     }
 
     return <div className={a.todolist}>

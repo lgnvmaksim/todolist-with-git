@@ -8,11 +8,11 @@ const instance = axios.create({
     }
 })
 
-type TodolistApiType = {
-    "id": string,
-    "title": string,
-    "addedDate": string,
-    "order": number
+export type TodolistApiType = {
+    id: string,
+    title: string,
+    addedDate: string,
+    order: number
 }
 
 type ResponseType<D= {}> = {
@@ -22,13 +22,13 @@ type ResponseType<D= {}> = {
     data: D
 }
 
-type TaskType={
+export type TaskType={
     totalCount: number,
     error: string | null,
     items: ItemsType[]
 }
 
-type ItemsType= ModelType & {
+export type ItemsType= ModelType & {
     id: string
     todoListId: string
     order: number
