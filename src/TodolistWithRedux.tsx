@@ -1,10 +1,10 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import a from "./Components/Styles-modules/styles.module.css";
 import {Span} from "./Components/Span";
 import {Input} from "./Components/Input";
 import {useAppDispatch, useAppSelector} from "./redusers/store";
 import {changeFilterAC, changeTodolistTileAC, FilteredType, removeTodolistAC} from "./redusers/todolistReducer";
-import {addTaskAC} from "./redusers/tasksReducer";
+import {addTaskAC, addTaskTC, downloadingTaskTC} from "./redusers/tasksReducer";
 import {Tasks} from "./Components/Tasks";
 import {ItemsType, TaskStatuses} from "./api/todolistApi";
 
@@ -17,6 +17,11 @@ type TodolistWithReduxPropsType = {
 
 
 export const TodolistWithRedux = memo(({todoID, filter, title}: TodolistWithReduxPropsType) => {
+
+    useEffect(()=>{
+        dispatch(downloadingTaskTC(todoID))
+    },[])
+
     let tasks = useAppSelector<ItemsType[]>(state => state.tasks[todoID])
     const dispatch = useAppDispatch()
 
@@ -29,7 +34,7 @@ export const TodolistWithRedux = memo(({todoID, filter, title}: TodolistWithRedu
     }, [])
 
     const addTask = useCallback((todoID: string, newTaskTitle: string) => {
-        dispatch(addTaskAC(todoID, newTaskTitle))
+        dispatch(addTaskTC(todoID, newTaskTitle))
     }, [])
 
     const changeFilter = useCallback((todoID: string, value: FilteredType) => {
