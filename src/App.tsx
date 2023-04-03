@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import a from './Components/Styles-modules/styles.module.css'
-import {addNewTodolistAC, getTodoTC, TodolistMainType,} from "./redusers/todolistReducer";
+import {createTodolistTC, getTodoTC, TodolistMainType,} from "./redusers/todolistReducer";
 import {Input} from "./Components/Input";
 import {useAppDispatch, useAppSelector} from "./redusers/store";
 import {TodolistWithRedux} from "./TodolistWithRedux";
@@ -19,8 +19,7 @@ export const App = () => {
 
 
     const addNewTodolist = (newTitle: string) => {
-        const action = addNewTodolistAC(newTitle)
-        dispatch(action)
+        dispatch(createTodolistTC(newTitle))
     }
 
     return <div className={a.App}>
@@ -35,8 +34,6 @@ export const App = () => {
                 />
             )
         })}
-
-
     </div>
 
 }

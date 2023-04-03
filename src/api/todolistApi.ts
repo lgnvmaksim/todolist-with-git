@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from "axios";
+import {TodolistMainType} from "../redusers/todolistReducer";
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -66,13 +67,13 @@ export const todolistApi = {
         return instance.get<TodolistApiType[]>('todo-lists')
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{item: TodolistApiType}>>('todo-lists', {title})
+        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistMainType }>>>('todo-lists', {title})
     },
     deleteTodolist(todoId: string){
         return instance.delete<ResponseType>(`todo-lists/${todoId}`)
     },
     updateTitleTodolist(title:string, todoId:string){
-        return instance.put<ResponseType>(`todo-lists/${todoId}`)
+        return instance.put<{title: string}, AxiosResponse<ResponseType>>(`todo-lists/${todoId}`, {title})
     }
 }
 
@@ -87,6 +88,6 @@ export const taskApi={
         return instance.delete<ResponseType>(`todo-lists/${todoId}/tasks/${taskId}`)
     },
     updateTask(todoId:string, taskId: string, model:ModelType){
-        return instance.put<ResponseType>(`todo-lists/${todoId}/tasks/${taskId}`, model)
+        return instance.put<ModelType, AxiosResponse<ResponseType<{item: ItemsType}>>>(`todo-lists/${todoId}/tasks/${taskId}`, model)
     }
 }

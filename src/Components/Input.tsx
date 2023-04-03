@@ -8,6 +8,8 @@ type InputType = {
 export const Input = memo(({callback}: InputType) => {
     const [text, setText] = useState('')
     const [error, setError] = useState<null | string>(null)
+
+
     const onChangeNewTaskHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setText(e.currentTarget.value)
         if (error !==null) {setError(null)}

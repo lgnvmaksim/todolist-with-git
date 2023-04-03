@@ -1,7 +1,7 @@
 import React, {memo, useCallback} from 'react';
 import a from "./Styles-modules/styles.module.css";
 import {Span} from "./Span";
-import {changeTaskStatusTC, changeTaskTitleAC, deleteTaskTC} from "../redusers/tasksReducer";
+import {changeTaskStatusTC, changeTaskTitleTC, deleteTaskTC} from "../redusers/tasksReducer";
 import {ItemsType, TaskStatuses} from "../api/todolistApi";
 import {useAppDispatch} from "../redusers/store";
 
@@ -18,7 +18,7 @@ export const Tasks = memo(({todoID, task}:TaskType) => {
         dispatch(changeTaskStatusTC(todoID, taskID, status))
     }, [dispatch])
     const changeTaskTitle = useCallback((todoID: string, taskID: string, newTitle: string) => {
-        dispatch(changeTaskTitleAC(todoID, taskID, newTitle))
+        dispatch(changeTaskTitleTC(todoID, taskID, newTitle))
     }, [dispatch])
     const removeTask = useCallback((todoID: string, taskID: string) => {
         dispatch(deleteTaskTC(todoID, taskID))

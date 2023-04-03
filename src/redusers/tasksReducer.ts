@@ -1,6 +1,5 @@
-import {v1} from "uuid";
 import {addNewTodolistACType, removeTodolistACType, setTodolistAC} from "./todolistReducer";
-import {ItemsType, ModelType, taskApi, TaskStatuses, todolistApi} from "../api/todolistApi";
+import {ItemsType, ModelType, taskApi, TaskStatuses} from "../api/todolistApi";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
 
@@ -62,7 +61,7 @@ export const tasksReducer = (state: TaskType = initialState, action: actionType)
         }
         case "ADD-NEW-TODOLIST": {
             return {
-                ...state, [action.payload.todoID]: []
+                ...state, [action.payload.todolist.id]: []
             }
         }
         default:
@@ -136,6 +135,23 @@ export const changeTaskStatusTC = (todoId: string, taskId: string, status: TaskS
                 status
             }
             taskApi.updateTask(todoId, taskId, model)
-                .then(res=>dispatch(changeCheckedAC(todoId, taskId, status)))
+                .then(()=>dispatch(changeCheckedAC(todoId, taskId, status)))
         }
 }
+
+export const changeTaskTitleTC = (todoId: string, taskId: string, newTitle: string) =>
+    (dispatch: Dispatch, getState: () => AppRootStateType) => {
+        let task =  getState().tasks[todoId].find((f) => f.id===taskId)
+        if (task){
+            let model: ModelType ={
+                title: task.title,
+                deadline: task.deadline,
+                description: task.description,
+                priority: task.priority,
+                startDate: task.startDate,
+                status: task.status
+            }
+            taskApi.updateTask(todoId, taskId, model)
+                .then(()=>dispatch(changeTaskTitleAC(todoId, taskId, newTitle)))
+        }
+    }

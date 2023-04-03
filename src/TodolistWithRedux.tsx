@@ -3,8 +3,8 @@ import a from "./Components/Styles-modules/styles.module.css";
 import {Span} from "./Components/Span";
 import {Input} from "./Components/Input";
 import {useAppDispatch, useAppSelector} from "./redusers/store";
-import {changeFilterAC, changeTodolistTileAC, FilteredType, removeTodolistAC} from "./redusers/todolistReducer";
-import {addTaskAC, addTaskTC, downloadingTaskTC} from "./redusers/tasksReducer";
+import {changeFilterAC, changeTodolistTitleTC, FilteredType, removeTodolistTC} from "./redusers/todolistReducer";
+import {addTaskTC, downloadingTaskTC} from "./redusers/tasksReducer";
 import {Tasks} from "./Components/Tasks";
 import {ItemsType, TaskStatuses} from "./api/todolistApi";
 
@@ -26,11 +26,11 @@ export const TodolistWithRedux = memo(({todoID, filter, title}: TodolistWithRedu
     const dispatch = useAppDispatch()
 
     const changeTodolistTile = useCallback((todoID: string, newTitle: string) => {
-        dispatch(changeTodolistTileAC(todoID, newTitle))
+        dispatch(changeTodolistTitleTC(todoID, newTitle))
     }, [])
 
     const removeTodolist = useCallback((todoID: string) => {
-        dispatch(removeTodolistAC(todoID))
+        dispatch(removeTodolistTC(todoID))
     }, [])
 
     const addTask = useCallback((todoID: string, newTaskTitle: string) => {
